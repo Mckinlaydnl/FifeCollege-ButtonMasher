@@ -39,6 +39,32 @@ int main()
 	gameMusic.openFromFile("audio/music.ogg");
 	//gameMusic.play();
 
+	//create font
+	sf::Font gameFont;
+	gameFont.loadFromFile("fonts/mainFont.ttf");
+
+
+	//create Title
+	sf::Text titleText;
+	titleText.setFont(gameFont);
+	titleText.setString("Button Masher!");
+	
+	titleText.setCharacterSize(100);
+	titleText.setFillColor(sf::Color::Black);
+	titleText.setStyle(sf::Text::Bold | sf::Text::Italic);
+
+	titleText.setPosition(gameWindow.getSize().x / 2
+		- titleText.getLocalBounds().width / 2, 30);
+
+	sf::Text authorText;
+	authorText.setFont(gameFont);
+	authorText.setString("By Daniel Mckinlay");
+	authorText.setCharacterSize(16);
+	authorText.setFillColor(sf::Color::Yellow);
+	authorText.setStyle(sf::Text::Italic);
+	authorText.setPosition(gameWindow.getSize().x / 2 - authorText.getLocalBounds().width / 2, 150);
+
+
 	// Game Loop
 	// Runs every frame until the game window is closed
 	while (gameWindow.isOpen())
@@ -64,6 +90,8 @@ int main()
 
 		//draw everything
 		gameWindow.draw(buttonSprite);
+		gameWindow.draw(titleText);
+		gameWindow.draw(authorText);
 		
 		//draw gameWindow
 		gameWindow.display();
