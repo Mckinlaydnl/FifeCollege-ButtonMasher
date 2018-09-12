@@ -65,8 +65,9 @@ int main()
 	authorText.setPosition(gameWindow.getSize().x / 2 - authorText.getLocalBounds().width / 2, 150);
 
 	//Score
-	int score = 100;
+	int score = 0;
 
+	//score text
 	sf::Text scoreText;
 	scoreText.setFont(gameFont);
 	scoreText.setString("Score: " + std::to_string(score));
@@ -74,8 +75,19 @@ int main()
 	scoreText.setFillColor(sf::Color::Black);
 	scoreText.setPosition(30,30);
 
+	sf::Text timerText;
+	timerText.setFont(gameFont);
+	timerText.setString("Time Remaining: 0");
+	timerText.setCharacterSize(16);
+	timerText.setFillColor(sf::Color::Black);
+	timerText.setPosition(gameWindow.getSize().x - timerText.getLocalBounds().width - 30, 30);
 
 
+
+	//timer functionality
+	sf::Time timeLimit = sf::seconds(10.0f); //20.0
+	sf::Time timeRemaining = timeLimit;
+	sf::Clock gameClock;
 	// Game Loop
 	// Runs every frame until the game window is closed
 	while (gameWindow.isOpen())
@@ -85,6 +97,16 @@ int main()
 		while (gameWindow.pollEvent(gameEvent))
 		{
 			// Process events
+			// Check if the event is the closed event
+			if (gameEvent.type == sf::Event::MouseButtonPressed)
+			{
+				// Close the game window
+				if (buttonSprite.getGlobalBounds().contains(gameEvent.mouseButton.x,gameEvent.mouseButton.y)) 
+				{
+					//We clicked the button
+					score = score + 1;
+				}
+			}
 
 			// Check if the event is the closed event
 			if (gameEvent.type == sf::Event::Closed)
@@ -94,8 +116,14 @@ int main()
 			}
 		}
 
+		//update game state
+		sf::Time frameTime = gameClock.restart();
+		timeRemaining = timeRemaining - frameTime;
+		timerText.setString("Time Remaining: " + std::to_string((int)timeRemaining.asSeconds()));
+
+
 		// TODO: Update game state
-		score = score + 1;
+		//score = score + 1;
 		scoreText.setString("Score: " + std::to_string(score));
 		// TODO: Draw graphics
 		gameWindow.clear(sf::Color::Red);
@@ -105,6 +133,7 @@ int main()
 		gameWindow.draw(titleText);
 		gameWindow.draw(authorText);
 		gameWindow.draw(scoreText);
+		gameWindow.draw(timerText);
 		
 		//draw gameWindow
 		gameWindow.display();
